@@ -1,0 +1,194 @@
+{
+  "seasons": [
+    {
+      "id": "closed-1",
+      "label": "Geschlossen",
+      "closed": true,
+      "from": "2025-10-12",
+      "to": "2025-12-05"
+    },
+    {
+      "id": "vor",
+      "label": "Vorsaison",
+      "tag": "Vor",
+      "closed": false,
+      "from": "2025-12-06",
+      "to": "2025-12-19"
+    },
+    {
+      "id": "haupt-1",
+      "label": "Hauptsaison",
+      "tag": "Haupt",
+      "closed": false,
+      "from": "2025-12-20",
+      "to": "2026-01-09"
+    },
+    {
+      "id": "haupt-2",
+      "label": "Hauptsaison",
+      "tag": "Haupt",
+      "closed": false,
+      "from": "2026-01-10",
+      "to": "2026-01-31"
+    },
+    {
+      "id": "haupt-3",
+      "label": "Hauptsaison",
+      "tag": "Haupt",
+      "closed": false,
+      "from": "2026-02-01",
+      "to": "2026-03-06"
+    },
+    {
+      "id": "nach",
+      "label": "Nachsaison",
+      "tag": "Nach",
+      "closed": false,
+      "from": "2026-03-07",
+      "to": "2026-04-06"
+    },
+    {
+      "id": "closed-2",
+      "label": "Geschlossen",
+      "closed": true,
+      "from": "2026-04-07",
+      "to": "2026-05-13"
+    },
+    {
+      "id": "sommer-1",
+      "label": "Sommersaison",
+      "tag": "Sommer",
+      "closed": false,
+      "from": "2026-05-14",
+      "to": "2026-07-03"
+    },
+    {
+      "id": "sommer-haupt",
+      "label": "Sommerhochsaison",
+      "tag": "Sommer",
+      "highlight": true,
+      "closed": false,
+      "from": "2026-07-04",
+      "to": "2026-08-22"
+    },
+    {
+      "id": "sommer-2",
+      "label": "Sommersaison",
+      "tag": "Sommer",
+      "closed": false,
+      "from": "2026-08-23",
+      "to": "2026-10-11"
+    },
+    {
+      "id": "closed-3",
+      "label": "Geschlossen",
+      "closed": true,
+      "from": "2026-10-12",
+      "to": "2026-12-04"
+    }
+  ],
+  "accommodations": [
+    {
+      "id": "doppelzimmer",
+      "label": "Doppelzimmer",
+      "sublabel": "1 – 2 Personen · inkl. Frühstück",
+      "type": "zimmer",
+      "pricingMode": "perPerson",
+      "minPersons": 1,
+      "maxPersons": 2,
+      "page": "zimmer-doppel",
+      "prices": {
+        "vor":        { "1": 55, "2": 51 },
+        "haupt-1":    { "1": 60, "2": 56 },
+        "haupt-2":    { "1": 55, "2": 51 },
+        "haupt-3":    { "1": 60, "2": 56 },
+        "nach":       { "1": 55, "2": 51 },
+        "sommer-1":   { "1": 46, "2": 42 },
+        "sommer-haupt":{ "1": 50, "2": 46 },
+        "sommer-2":   { "1": 46, "2": 42 }
+      }
+    },
+    {
+      "id": "dreibettzimmer",
+      "label": "Dreibettzimmer",
+      "sublabel": "2 – 3 Personen · inkl. Frühstück",
+      "type": "zimmer",
+      "pricingMode": "perPerson",
+      "minPersons": 2,
+      "maxPersons": 3,
+      "page": "zimmer-dreibett",
+      "prices": {
+        "vor":        { "2": 51, "3": 35 },
+        "haupt-1":    { "2": 56, "3": 39 },
+        "haupt-2":    { "2": 51, "3": 35 },
+        "haupt-3":    { "2": 56, "3": 39 },
+        "nach":       { "2": 51, "3": 35 },
+        "sommer-1":   { "2": 42, "3": 30 },
+        "sommer-haupt":{ "2": 46, "3": 33 },
+        "sommer-2":   { "2": 42, "3": 30 }
+      }
+    },
+    {
+      "id": "vierbettzimmer",
+      "label": "Vierbettzimmer",
+      "sublabel": "2 – 4 Personen · inkl. Frühstück",
+      "type": "zimmer",
+      "pricingMode": "perPerson",
+      "minPersons": 2,
+      "maxPersons": 4,
+      "page": "zimmer-vierbett",
+      "prices": {
+        "vor":        { "2": 51, "3": 35, "4": 35 },
+        "haupt-1":    { "2": 56, "3": 39, "4": 39 },
+        "haupt-2":    { "2": 51, "3": 35, "4": 35 },
+        "haupt-3":    { "2": 56, "3": 39, "4": 39 },
+        "nach":       { "2": 51, "3": 35, "4": 35 },
+        "sommer-1":   { "2": 42, "3": 30, "4": 30 },
+        "sommer-haupt":{ "2": 46, "3": 33, "4": 33 },
+        "sommer-2":   { "2": 42, "3": 30, "4": 30 }
+      }
+    },
+    {
+      "id": "apartment-2-4",
+      "label": "Apartment",
+      "sublabel": "2 – 4 Personen · ohne Verpflegung",
+      "type": "apartment",
+      "pricingMode": "perUnit",
+      "minPersons": 2,
+      "maxPersons": 4,
+      "page": "apt-2-4",
+      "endreinigung": 45,
+      "prices": {
+        "vor":        { "2": 90,  "3": 113, "4": 135 },
+        "haupt-1":    { "2": 100, "3": 125, "4": 148 },
+        "haupt-2":    { "2": 90,  "3": 113, "4": 135 },
+        "haupt-3":    { "2": 100, "3": 125, "4": 148 },
+        "nach":       { "2": 90,  "3": 113, "4": 135 },
+        "sommer-1":   { "2": 69,  "3": 84,  "4": 96  },
+        "sommer-haupt":{ "2": 77, "3": 94,  "4": 105 },
+        "sommer-2":   { "2": 69,  "3": 84,  "4": 96  }
+      }
+    },
+    {
+      "id": "apartment-4-6",
+      "label": "Großes Apartment",
+      "sublabel": "4 – 6 Personen · ohne Verpflegung",
+      "type": "apartment",
+      "pricingMode": "perUnit",
+      "minPersons": 4,
+      "maxPersons": 6,
+      "page": "apt-4-6",
+      "endreinigung": 58,
+      "prices": {
+        "vor":        { "4": 139, "5": 173, "6": 206 },
+        "haupt-1":    { "4": 158, "5": 195, "6": 228 },
+        "haupt-2":    { "4": 139, "5": 173, "6": 206 },
+        "haupt-3":    { "4": 158, "5": 195, "6": 228 },
+        "nach":       { "4": 139, "5": 173, "6": 206 },
+        "sommer-1":   { "4": 98,  "5": 98,  "6": 156 },
+        "sommer-haupt":{ "4": 107,"5": 107, "6": 169 },
+        "sommer-2":   { "4": 98,  "5": 98,  "6": 156 }
+      }
+    }
+  ]
+}
