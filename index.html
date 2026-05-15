@@ -39,8 +39,10 @@
       <path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="1.5"/>
     </svg>
   </button>
-  <div class="lang">
-    <span>DE</span><em>/</em><span>EN</span>
+  <div class="lang" role="group" aria-label="Sprache wählen">
+    <button type="button" class="lang-btn active" data-set-lang="de" aria-pressed="true">DE</button>
+    <em>/</em>
+    <button type="button" class="lang-btn" data-set-lang="en" aria-pressed="false">EN</button>
   </div>
 </header>
 
@@ -2298,11 +2300,11 @@
           </div>
           <div class="form-row">
             <div class="form-field">
-              <label>Anreise</label>
+              <label>Anreisedatum</label>
               <input type="date" />
             </div>
             <div class="form-field">
-              <label>Abreise</label>
+              <label>Abreisedatum</label>
               <input type="date" />
             </div>
           </div>
@@ -2543,6 +2545,7 @@
 </footer>
 
 
+<script src="js/i18n.js"></script>
 <script src="js/app.js"></script>
 <script src="js/calculator.js"></script>
 
