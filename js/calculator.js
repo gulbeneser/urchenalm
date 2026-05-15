@@ -5,6 +5,7 @@ let PRICE_DATA = null;
 async function loadPriceData() {
   if (PRICE_DATA) return PRICE_DATA;
   const r = await fetch('data/prices.json');
+  if (!r.ok) throw new Error('Fiyat verileri yüklenemedi');
   PRICE_DATA = await r.json();
   return PRICE_DATA;
 }
@@ -262,7 +263,7 @@ function updatePersonsRange(data) {
 
   personsInput.min = accom.minPersons;
   personsInput.max = accom.maxPersons;
-  const cur = parseInt(personsInput.value);
+  const cur = parseInt(personsInput.value, 10);
   if (cur < accom.minPersons) personsInput.value = accom.minPersons;
   if (cur > accom.maxPersons) personsInput.value = accom.maxPersons;
 
@@ -287,7 +288,7 @@ async function runCalculation(data) {
 
   const checkinVal = document.getElementById('calc-checkin')?.value;
   const checkoutVal = document.getElementById('calc-checkout')?.value;
-  const personsVal = parseInt(document.getElementById('calc-persons')?.value || '2');
+  const personsVal = parseInt(document.getElementById('calc-persons')?.value || '2', 10);
 
   if (!checkinVal || !checkoutVal) {
     renderResult({ error: 'Bitte Anreise- und Abreisedatum wählen.' }, accom);

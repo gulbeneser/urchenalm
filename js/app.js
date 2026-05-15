@@ -20,7 +20,7 @@ function navigateTo(pageName, push = true) {
     link.classList.toggle('active', link.dataset.link === pageName);
   });
 
-  try { window.scrollTo({ top: 0, behavior: 'instant' }); } catch(e) {}
+  try { window.scrollTo({ top: 0, behavior: 'auto' }); } catch(e) {}
 
   if (push) {
     try {
