@@ -68,12 +68,14 @@
   .topbar.scrolled { padding: 10px 40px; }
 
   .brand-logo {
-    height: 44px;
+    height: 54px;
     width: auto;
     display: block;
+    object-fit: contain;
+    transition: height 0.4s ease;
   }
 
-  .topbar.scrolled .brand-logo { height: 36px; transition: height 0.4s; }
+  .topbar.scrolled .brand-logo { height: 42px; }
 
   .brand {
     display: flex;
@@ -1402,18 +1404,16 @@
   }
 
   .footer-brand {
-    font-family: var(--serif);
-    font-weight: 300;
-    font-size: 28px;
-    line-height: 1.1;
+    display: inline-flex;
+    align-items: center;
     margin-bottom: 18px;
-    font-variation-settings: "opsz" 48, "SOFT" 40;
   }
 
-  .footer-brand em {
-    font-style: italic;
-    color: var(--gold);
-    font-variation-settings: "opsz" 48, "SOFT" 80, "WONK" 1;
+  .footer-logo {
+    width: 150px;
+    height: auto;
+    display: block;
+    object-fit: contain;
   }
 
   .footer-tagline {
@@ -3125,6 +3125,8 @@
 
   @media (max-width: 720px) {
     .topbar { padding: 14px 18px; }
+    .brand-logo { height: 46px; }
+    .topbar.scrolled .brand-logo { height: 38px; }
     .brand-sub { display: none; }
     .page-head { padding: 100px 20px 40px; }
     .page-body { padding: 50px 20px 70px; }
