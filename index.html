@@ -85,6 +85,15 @@
       </div>
     </section>
 
+    <section class="home-calculator-banner" aria-labelledby="home-calc-title">
+      <div class="home-calc-copy">
+        <div class="qf-eyebrow">Direkt planen</div>
+        <h2 id="home-calc-title">Urlaubspreis als <em>Richtwert</em> sofort sehen.</h2>
+        <p>Geben Sie Anreise, Abreise und Personenzahl ein. Der Rechner nutzt die aktuellen Saisonpreise 2025/2026 für Zimmer und Apartments.</p>
+      </div>
+      <div class="home-calc-panel" data-calc-widget data-calc-default="doppelzimmer" data-calc-title="Preisrechner" data-calc-text="Schnell prüfen und danach direkt anfragen."></div>
+    </section>
+
     <section class="home-teasers">
       <div class="home-teasers-grid">
         <div class="teaser teaser-1" data-link="zimmer">
@@ -1504,6 +1513,9 @@
       </div>
     </div>
   </div>
+
+
+      <section class="detail-calculator" data-calc-widget data-calc-default="doppelzimmer" data-calc-lock="true" data-calc-title="Doppelzimmer-Preis berechnen" data-calc-text="Für dieses Doppelzimmer sind Unterkunft und Personenrahmen bereits passend voreingestellt."></section>
 </main>
 
 <!-- ============ DETAIL: DREIBETTZIMMER ============ -->
@@ -1671,6 +1683,9 @@
       </div>
     </div>
   </div>
+
+
+      <section class="detail-calculator" data-calc-widget data-calc-default="dreibettzimmer" data-calc-lock="true" data-calc-title="Dreibettzimmer-Preis berechnen" data-calc-text="Für dieses Dreibettzimmer sind Unterkunft und Personenrahmen bereits passend voreingestellt."></section>
 </main>
 
 <!-- ============ DETAIL: VIERBETTZIMMER ============ -->
@@ -1850,6 +1865,9 @@
       </div>
     </div>
   </div>
+
+
+      <section class="detail-calculator" data-calc-widget data-calc-default="vierbettzimmer" data-calc-lock="true" data-calc-title="Vierbettzimmer-Preis berechnen" data-calc-text="Für dieses Vierbettzimmer sind Unterkunft und Personenrahmen bereits passend voreingestellt."></section>
 </main>
 
 <!-- ============ DETAIL: APARTMENT 2 – 4 ============ -->
@@ -2036,6 +2054,9 @@
       </div>
     </div>
   </div>
+
+
+      <section class="detail-calculator" data-calc-widget data-calc-default="apartment-2-4" data-calc-lock="true" data-calc-title="Apartment-Preis berechnen" data-calc-text="Für dieses Apartment sind Unterkunft und Personenrahmen bereits passend voreingestellt."></section>
 </main>
 
 <!-- ============ DETAIL: APARTMENT 4 – 6 ============ -->
@@ -2222,6 +2243,9 @@
       </div>
     </div>
   </div>
+
+
+      <section class="detail-calculator" data-calc-widget data-calc-default="apartment-4-6" data-calc-lock="true" data-calc-title="Großes Apartment berechnen" data-calc-text="Für dieses große Apartment sind Unterkunft und Personenrahmen bereits passend voreingestellt."></section>
 </main>
 
 <!-- ============ KONTAKT ============ -->
@@ -2393,43 +2417,6 @@
   </div>
 </main>
 
-<!-- FOOTER (alle Seiten) -->
-<footer>
-  <div class="footer-grid">
-    <div>
-      <div class="footer-brand">Frühstückspension <em>Urchenhof</em></div>
-      <p class="footer-tagline">Familienbetrieb am Fuße des Hochkönigs. Geführt von Familie Herzog. Direkt am Natrun-Lift in Maria Alm, Salzburger Land.</p>
-    </div>
-
-    <div class="footer-col">
-      <h4>Adresse</h4>
-      <p>Familie Herzog<br>Urchen 11<br>5761 Maria Alm<br>Österreich</p>
-    </div>
-
-    <div class="footer-col">
-      <h4>Kontakt</h4>
-      <p>Tel. +43 6584 7893<br>Fax +43 6584 7295 15</p>
-      <a href="mailto:info@pension-urchenhof.at">info@pension-urchenhof.at</a>
-      <a href="https://www.pension-urchenhof.at">www.pension-urchenhof.at</a>
-    </div>
-
-    <div class="footer-col">
-      <h4>Schwesterhaus</h4>
-      <p>Apartmenthaus<br>Lärchenhof</p>
-      <a href="https://www.apartments-laerchenhof.at">apartments-laerchenhof.at</a>
-    </div>
-  </div>
-
-  <div class="footer-bottom">
-    <div>© <span id="year">2026</span> Frühstückspension Urchenhof · Familie Herzog</div>
-    <div style="display: flex; gap: 24px;">
-      <a>Impressum</a>
-      <a>Datenschutz</a>
-      <a data-link="kontakt">Anfrage</a>
-    </div>
-  </div>
-
-
 <!-- ============ PREISKALKULATOR ============ -->
 <main class="page" id="page-kalkulator" data-page="kalkulator">
   <div class="page-head">
@@ -2442,57 +2429,7 @@
   <div class="page-body">
     <div class="container">
 
-      <p class="calc-intro-text">Unterkunft wählen, Reisedaten eingeben, Personenzahl bestimmen – der Preis wird direkt auf Basis unserer Saisontarife berechnet.</p>
-
-      <form id="calc-form" class="calc-form" autocomplete="off">
-
-        <div class="calc-step">
-          <div class="calc-step-label">
-            <span class="calc-step-num">01</span>
-            Unterkunft wählen
-          </div>
-          <div id="calc-accom-grid" class="calc-accom-grid"></div>
-        </div>
-
-        <div class="calc-step">
-          <div class="calc-step-label">
-            <span class="calc-step-num">02</span>
-            Reisedaten &amp; Personen
-          </div>
-          <div class="calc-dates-row">
-            <div class="calc-field">
-              <label class="calc-label" for="calc-checkin">Anreise</label>
-              <input type="date" id="calc-checkin" class="calc-input" required>
-            </div>
-            <div class="calc-field-sep">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </div>
-            <div class="calc-field">
-              <label class="calc-label" for="calc-checkout">Abreise</label>
-              <input type="date" id="calc-checkout" class="calc-input" required>
-            </div>
-            <div class="calc-field calc-persons-field">
-              <label class="calc-label">Personen</label>
-              <div class="calc-stepper">
-                <button type="button" class="calc-step-btn" data-step="calc-persons" data-dir="down">−</button>
-                <span id="calc-persons-val" class="calc-stepper-val">2</span>
-                <button type="button" class="calc-step-btn" data-step="calc-persons" data-dir="up">+</button>
-                <input type="number" id="calc-persons" class="calc-persons-hidden" value="2" min="1" max="6">
-              </div>
-              <div id="calc-persons-display" class="calc-persons-range">1 – 2 Personen</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="calc-submit-row">
-          <button type="submit" class="calc-submit-btn">
-            Preis berechnen
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </button>
-        </div>
-      </form>
-
-      <div id="calc-result" class="calc-result"></div>
+      <section class="page-calculator-panel" data-calc-widget data-calc-default="doppelzimmer" data-calc-title="Preis sofort berechnen" data-calc-text="Unterkunft wählen, Reisedaten eingeben, Personenzahl bestimmen – der Preis wird direkt auf Basis unserer Saisontarife berechnet."></section>
 
       <div class="calc-season-overview">
         <div class="calc-season-overview-head">
@@ -2564,6 +2501,41 @@
   </div>
 </main>
 
+<!-- FOOTER (alle Seiten) -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Frühstückspension <em>Urchenhof</em></div>
+      <p class="footer-tagline">Familienbetrieb am Fuße des Hochkönigs. Geführt von Familie Herzog. Direkt am Natrun-Lift in Maria Alm, Salzburger Land.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Adresse</h4>
+      <p>Familie Herzog<br>Urchen 11<br>5761 Maria Alm<br>Österreich</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Kontakt</h4>
+      <p>Tel. +43 6584 7893<br>Fax +43 6584 7295 15</p>
+      <a href="mailto:info@pension-urchenhof.at">info@pension-urchenhof.at</a>
+      <a href="https://www.pension-urchenhof.at">www.pension-urchenhof.at</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Schwesterhaus</h4>
+      <p>Apartmenthaus<br>Lärchenhof</p>
+      <a href="https://www.apartments-laerchenhof.at">apartments-laerchenhof.at</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div>© <span id="year">2026</span> Frühstückspension Urchenhof · Familie Herzog</div>
+    <div style="display: flex; gap: 24px;">
+      <a>Impressum</a>
+      <a>Datenschutz</a>
+      <a data-link="kontakt">Anfrage</a>
+    </div>
+  </div>
 </footer>
 
 

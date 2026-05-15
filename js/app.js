@@ -77,12 +77,13 @@ document.addEventListener('click', (e) => {
   const btn = e.target.closest('[data-step]');
   if (!btn) return;
   const targetId = btn.dataset.step;
-  const input = document.getElementById(targetId);
+  const root = btn.closest('[data-calc-widget], .page, body') || document;
+  const input = root.querySelector(`#${CSS.escape(targetId)}`) || document.getElementById(targetId);
   if (!input) return;
   const delta = btn.dataset.dir === 'up' ? 1 : -1;
   const next = Math.min(Math.max(Number(input.value) + delta, Number(input.min)), Number(input.max));
   input.value = next;
-  input.dispatchEvent(new Event('change'));
-  const display = document.getElementById(targetId + '-val');
+  input.dispatchEvent(new Event('change', { bubbles: true }));
+  const display = root.querySelector(`#${CSS.escape(targetId)}-val`) || document.getElementById(targetId + '-val');
   if (display) display.textContent = next;
 });

@@ -1,6 +1,7 @@
 /* ============ PREISKALKULATOR ============ */
 
 let PRICE_DATA = null;
+let CALC_UID = 0;
 
 async function loadPriceData() {
   if (PRICE_DATA) return PRICE_DATA;
@@ -10,7 +11,6 @@ async function loadPriceData() {
 }
 
 function parseDate(str) {
-  // str: "YYYY-MM-DD"
   const [y, m, d] = str.split('-').map(Number);
   return new Date(y, m - 1, d);
 }
@@ -33,12 +33,8 @@ function findSeason(date, seasons) {
   return seasons.find(s => ds >= s.from && ds <= s.to) || null;
 }
 
-function formatEur(n) {
-  return '€ ' + n.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-}
-
 function formatEurInt(n) {
-  return '€ ' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  return '€\u202f' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
 function calcPrice(accom, persons, checkin, checkout, seasons) {
@@ -73,7 +69,6 @@ function calcPrice(accom, persons, checkin, checkout, seasons) {
       return { error: `Für ${persons} Personen ist kein Preis in dieser Saison verfügbar.` };
     }
 
-    // Group consecutive nights in same season
     let segEnd = addDays(cur, 1);
     while (segEnd < checkout) {
       const nextSeason = findSeason(segEnd, seasons);
@@ -121,17 +116,30 @@ function calcPrice(accom, persons, checkin, checkout, seasons) {
   };
 }
 
-function renderResult(result, accom) {
-  const box = document.getElementById('calc-result');
-  if (!box) return;
+function getCalcElements(widget) {
+  return {
+    form: widget.querySelector('.calc-form'),
+    accomGrid: widget.querySelector('.calc-accom-grid'),
+    checkinInput: widget.querySelector('.calc-checkin'),
+    checkoutInput: widget.querySelector('.calc-checkout'),
+    personsInput: widget.querySelector('.calc-persons-hidden'),
+    personsDisplay: widget.querySelector('.calc-persons-range'),
+    personsVal: widget.querySelector('.calc-stepper-val'),
+    resultBox: widget.querySelector('.calc-result')
+  };
+}
+
+function renderResult(widget, result, accom) {
+  const { resultBox } = getCalcElements(widget);
+  if (!resultBox) return;
 
   if (result.error) {
-    box.innerHTML = `
+    resultBox.innerHTML = `
       <div class="calc-error">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         ${result.error}
       </div>`;
-    box.classList.add('visible');
+    resultBox.classList.add('visible');
     return;
   }
 
@@ -159,7 +167,7 @@ function renderResult(result, accom) {
     ? `Preise pro Person · ${result.persons} ${result.persons === 1 ? 'Person' : 'Personen'} · inkl. Frühstücksbuffet`
     : `Gesamtpreis für die Unterkunft · ${result.persons} Personen · ohne Verpflegung · zzgl. Endreinigung`;
 
-  box.innerHTML = `
+  resultBox.innerHTML = `
     <div class="calc-result-inner">
       <div class="calc-result-header">
         <div class="calc-result-accom">${accom.label}</div>
@@ -179,128 +187,181 @@ function renderResult(result, accom) {
         <a data-link="${accom.page}" class="calc-cta-link">Details ansehen →</a>
       </div>
     </div>`;
-  box.classList.add('visible');
+  resultBox.classList.add('visible');
 }
 
-async function initCalculator() {
-  const form = document.getElementById('calc-form');
-  if (!form) return;
+function renderCalculatorShell(widget, data, uid) {
+  const lockTo = widget.dataset.calcLock === 'true' ? widget.dataset.calcDefault : '';
+  const defaultAccom = widget.dataset.calcDefault || 'doppelzimmer';
+  const title = widget.dataset.calcTitle || 'Preis schnell berechnen';
+  const text = widget.dataset.calcText || 'Unterkunft, Zeitraum und Personenzahl wählen – der Richtpreis wird sofort aus den Saisontarifen berechnet.';
+  const accommodations = lockTo
+    ? data.accommodations.filter(a => a.id === lockTo)
+    : data.accommodations;
 
-  const data = await loadPriceData();
-
-  // Render accommodation cards
-  const accomGrid = document.getElementById('calc-accom-grid');
-  if (accomGrid) {
-    accomGrid.innerHTML = data.accommodations.map(a => `
-      <label class="calc-accom-card" data-id="${a.id}">
-        <input type="radio" name="calc-accom" value="${a.id}" ${a.id === 'doppelzimmer' ? 'checked' : ''}>
-        <div class="calc-accom-inner">
-          <div class="calc-accom-type-badge">${a.type === 'zimmer' ? 'Zimmer' : 'Ferienwohnung'}</div>
-          <div class="calc-accom-name">${a.label}</div>
-          <div class="calc-accom-sub">${a.sublabel}</div>
+  widget.innerHTML = `
+    <div class="calc-widget-head">
+      <div class="calc-widget-eyebrow">Preisrechner</div>
+      <h2>${title}</h2>
+      <p>${text}</p>
+    </div>
+    <form class="calc-form" autocomplete="off">
+      <div class="calc-step">
+        <div class="calc-step-label"><span class="calc-step-num">01</span>Unterkunft wählen</div>
+        <div class="calc-accom-grid"></div>
+      </div>
+      <div class="calc-step">
+        <div class="calc-step-label"><span class="calc-step-num">02</span>Reisedaten &amp; Personen</div>
+        <div class="calc-dates-row">
+          <div class="calc-field">
+            <label class="calc-label" for="${uid}-checkin">Anreise</label>
+            <input type="date" id="${uid}-checkin" class="calc-input calc-checkin" required>
+          </div>
+          <div class="calc-field-sep">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+          <div class="calc-field">
+            <label class="calc-label" for="${uid}-checkout">Abreise</label>
+            <input type="date" id="${uid}-checkout" class="calc-input calc-checkout" required>
+          </div>
+          <div class="calc-field calc-persons-field">
+            <label class="calc-label">Personen</label>
+            <div class="calc-stepper">
+              <button type="button" class="calc-step-btn" data-step="${uid}-persons" data-dir="down">−</button>
+              <span id="${uid}-persons-val" class="calc-stepper-val">2</span>
+              <button type="button" class="calc-step-btn" data-step="${uid}-persons" data-dir="up">+</button>
+              <input type="number" id="${uid}-persons" class="calc-persons-hidden" value="2" min="1" max="6">
+            </div>
+            <div class="calc-persons-range">1 – 2 Personen</div>
+          </div>
         </div>
-      </label>`).join('');
+      </div>
+      <div class="calc-submit-row">
+        <button type="submit" class="calc-submit-btn">
+          Preis berechnen
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </form>
+    <div class="calc-result"></div>`;
 
-    // Mark first card active
-    accomGrid.querySelector('.calc-accom-card')?.classList.add('selected');
-
-    accomGrid.addEventListener('change', (e) => {
-      if (e.target.name === 'calc-accom') {
-        accomGrid.querySelectorAll('.calc-accom-card').forEach(c => c.classList.remove('selected'));
-        e.target.closest('.calc-accom-card').classList.add('selected');
-        updatePersonsRange(data);
-        clearResult();
-      }
-    });
+  const { accomGrid } = getCalcElements(widget);
+  accomGrid.innerHTML = accommodations.map(a => `
+    <label class="calc-accom-card" data-id="${a.id}">
+      <input type="radio" name="${uid}-accom" value="${a.id}" ${a.id === defaultAccom ? 'checked' : ''}>
+      <div class="calc-accom-inner">
+        <div class="calc-accom-type-badge">${a.type === 'zimmer' ? 'Zimmer' : 'Ferienwohnung'}</div>
+        <div class="calc-accom-name">${a.label}</div>
+        <div class="calc-accom-sub">${a.sublabel}</div>
+      </div>
+    </label>`).join('');
+  const checked = accomGrid.querySelector('input:checked') || accomGrid.querySelector('input');
+  if (checked) {
+    checked.checked = true;
+    checked.closest('.calc-accom-card')?.classList.add('selected');
   }
-
-  updatePersonsRange(data);
-
-  // Set default dates
-  const today = new Date();
-  const nextWeek = addDays(today, 7);
-  const nextFortnight = addDays(today, 14);
-  const checkinInput = document.getElementById('calc-checkin');
-  const checkoutInput = document.getElementById('calc-checkout');
-  if (checkinInput) checkinInput.value = dateStr(nextWeek);
-  if (checkoutInput) checkoutInput.value = dateStr(nextFortnight);
-
-  if (checkinInput) {
-    checkinInput.addEventListener('change', () => {
-      // Auto-advance checkout if needed
-      if (checkoutInput) {
-        const ci = parseDate(checkinInput.value);
-        const co = parseDate(checkoutInput.value);
-        if (co <= ci) {
-          checkoutInput.value = dateStr(addDays(ci, 7));
-        }
-        checkoutInput.min = dateStr(addDays(ci, 1));
-      }
-      clearResult();
-    });
-  }
-  if (checkoutInput) checkoutInput.addEventListener('change', clearResult);
-
-  const personsInput = document.getElementById('calc-persons');
-  if (personsInput) personsInput.addEventListener('change', clearResult);
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    await runCalculation(data);
-  });
 }
 
-function updatePersonsRange(data) {
-  const selected = document.querySelector('input[name="calc-accom"]:checked');
-  if (!selected) return;
-  const accom = data.accommodations.find(a => a.id === selected.value);
+function selectedAccommodation(widget, data) {
+  const selected = widget.querySelector('.calc-accom-card input:checked');
+  if (!selected) return null;
+  return data.accommodations.find(a => a.id === selected.value) || null;
+}
+
+function updatePersonsRange(widget, data) {
+  const accom = selectedAccommodation(widget, data);
   if (!accom) return;
 
-  const personsInput = document.getElementById('calc-persons');
-  const personsDisplay = document.getElementById('calc-persons-display');
+  const { personsInput, personsDisplay, personsVal } = getCalcElements(widget);
   if (!personsInput) return;
 
   personsInput.min = accom.minPersons;
   personsInput.max = accom.maxPersons;
-  const cur = parseInt(personsInput.value);
+  const cur = parseInt(personsInput.value, 10);
   if (cur < accom.minPersons) personsInput.value = accom.minPersons;
   if (cur > accom.maxPersons) personsInput.value = accom.maxPersons;
+  if (personsVal) personsVal.textContent = personsInput.value;
+  if (personsDisplay) personsDisplay.textContent = `${accom.minPersons} – ${accom.maxPersons} Personen`;
+}
 
-  if (personsDisplay) {
-    personsDisplay.textContent = `${accom.minPersons} – ${accom.maxPersons} Personen`;
+function clearResult(widget) {
+  const { resultBox } = getCalcElements(widget);
+  if (resultBox) {
+    resultBox.classList.remove('visible');
+    resultBox.innerHTML = '';
   }
 }
 
-function clearResult() {
-  const box = document.getElementById('calc-result');
-  if (box) {
-    box.classList.remove('visible');
-    box.innerHTML = '';
-  }
-}
-
-async function runCalculation(data) {
-  const selected = document.querySelector('input[name="calc-accom"]:checked');
-  if (!selected) return;
-  const accom = data.accommodations.find(a => a.id === selected.value);
+function runCalculation(widget, data) {
+  const accom = selectedAccommodation(widget, data);
   if (!accom) return;
 
-  const checkinVal = document.getElementById('calc-checkin')?.value;
-  const checkoutVal = document.getElementById('calc-checkout')?.value;
-  const personsVal = parseInt(document.getElementById('calc-persons')?.value || '2');
+  const { checkinInput, checkoutInput, personsInput } = getCalcElements(widget);
+  const checkinVal = checkinInput?.value;
+  const checkoutVal = checkoutInput?.value;
+  const personsVal = parseInt(personsInput?.value || '2', 10);
 
   if (!checkinVal || !checkoutVal) {
-    renderResult({ error: 'Bitte Anreise- und Abreisedatum wählen.' }, accom);
+    renderResult(widget, { error: 'Bitte Anreise- und Abreisedatum wählen.' }, accom);
     return;
   }
 
-  const checkin = parseDate(checkinVal);
-  const checkout = parseDate(checkoutVal);
-
-  const result = calcPrice(accom, personsVal, checkin, checkout, data.seasons);
-  renderResult(result, accom);
+  const result = calcPrice(accom, personsVal, parseDate(checkinVal), parseDate(checkoutVal), data.seasons);
+  renderResult(widget, result, accom);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  initCalculator();
-});
+async function initCalculatorWidget(widget) {
+  if (widget.dataset.calcReady === 'true') return;
+  widget.dataset.calcReady = 'true';
+
+  const data = await loadPriceData();
+  const uid = `calc-${++CALC_UID}`;
+  renderCalculatorShell(widget, data, uid);
+
+  const { form, accomGrid, checkinInput, checkoutInput, personsInput } = getCalcElements(widget);
+  updatePersonsRange(widget, data);
+
+  const today = new Date();
+  const nextWeek = addDays(today, 7);
+  const nextFortnight = addDays(today, 14);
+  if (checkinInput) checkinInput.value = dateStr(nextWeek);
+  if (checkoutInput) {
+    checkoutInput.value = dateStr(nextFortnight);
+    checkoutInput.min = dateStr(addDays(nextWeek, 1));
+  }
+
+  accomGrid?.addEventListener('change', (e) => {
+    if (e.target.matches('input[type="radio"]')) {
+      accomGrid.querySelectorAll('.calc-accom-card').forEach(c => c.classList.remove('selected'));
+      e.target.closest('.calc-accom-card')?.classList.add('selected');
+      updatePersonsRange(widget, data);
+      clearResult(widget);
+    }
+  });
+
+  checkinInput?.addEventListener('change', () => {
+    if (checkoutInput) {
+      const ci = parseDate(checkinInput.value);
+      const co = parseDate(checkoutInput.value);
+      if (co <= ci) checkoutInput.value = dateStr(addDays(ci, 7));
+      checkoutInput.min = dateStr(addDays(ci, 1));
+    }
+    clearResult(widget);
+  });
+  checkoutInput?.addEventListener('change', () => clearResult(widget));
+  personsInput?.addEventListener('change', () => {
+    updatePersonsRange(widget, data);
+    clearResult(widget);
+  });
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    runCalculation(widget, data);
+  });
+}
+
+function initCalculators() {
+  document.querySelectorAll('[data-calc-widget]').forEach(initCalculatorWidget);
+}
+
+document.addEventListener('DOMContentLoaded', initCalculators);
