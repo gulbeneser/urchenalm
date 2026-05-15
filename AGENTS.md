@@ -27,6 +27,11 @@
 - Update `robots.txt` when the sitemap URL or production domain changes.
 - Add meaningful `alt` text for new images.
 
+## Logo and brand assets
+- The active site logo is `photos/newlogo.png`; use this file for header, footer, favicon/apple-touch icon, and any future logo placements instead of embedding base64 image data.
+- Logo images should include descriptive German `alt` text such as `Frühstückspension Urchenhof Logo` and explicit dimensions when placed in HTML to reduce layout shift.
+- Keep logo styling in `css/style.css` under `.brand-logo` and `.footer-logo` so future replacements can be made without duplicating inline styles.
+
 ## Design system
 - Use existing CSS variables (`--bg`, `--paper`, `--moss`, `--ember`, `--gold`, etc.) instead of introducing unrelated colors.
 - Keep the visual language consistent: warm paper backgrounds, moss green accents, ember CTAs, Fraunces headings, Manrope body text.
@@ -41,3 +46,8 @@
 
 ## Recent maintenance notes
 - Apartment calculator totals include the configured `endreinigung` amount from `data/prices.json`; user-facing result copy must therefore say that Endreinigung is included in the displayed Gesamtpreis, not added separately on top.
+
+## Task completion checklist
+- At the end of every task, review this `AGENTS.md` guide and update it when new project knowledge, maintenance notes, asset rules, SEO rules, or testing expectations have changed.
+- Check `sitemap.xml` before finishing. Because this project currently uses hash-routed sections, only add sitemap entries when real indexable URLs are introduced; otherwise keep the root URL only.
+- Preserve the SEO Perfect principle: descriptive German content, meaningful titles/headings, clean metadata, crawlable production URLs, optimized image `alt` text, and consistent hospitality/location keywords.
