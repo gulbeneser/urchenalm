@@ -163,9 +163,12 @@ function renderResult(widget, result, accom) {
       <span>${formatEurInt(e.amount)}</span>
     </div>`).join('');
 
+  const personLabel = result.persons === 1 ? 'Person' : 'Personen';
+  const hasExtras = result.extras.length > 0;
   const infoLine = result.pricingMode === 'perPerson'
-    ? `Preise pro Person · ${result.persons} ${result.persons === 1 ? 'Person' : 'Personen'} · inkl. Frühstücksbuffet`
-    : `Gesamtpreis für die Unterkunft · ${result.persons} Personen · ohne Verpflegung · zzgl. Endreinigung`;
+    ? `Preise pro Person · ${result.persons} ${personLabel} · inkl. Frühstücksbuffet`
+    : `Gesamtpreis für die Unterkunft · ${result.persons} ${personLabel} · ohne Verpflegung${hasExtras ? ' · inkl. Endreinigung' : ''}`;
+  const totalLabel = hasExtras ? 'Gesamtpreis inkl. Endreinigung' : 'Gesamtpreis';
 
   resultBox.innerHTML = `
     <div class="calc-result-inner">
@@ -176,7 +179,7 @@ function renderResult(widget, result, accom) {
       <div class="calc-segments">${segRows}</div>
       ${extrasRows ? `<div class="calc-extras">${extrasRows}</div>` : ''}
       <div class="calc-total-row">
-        <span>Gesamtpreis</span>
+        <span>${totalLabel}</span>
         <span class="calc-grand-total">${formatEurInt(result.grandTotal)}</span>
       </div>
       <div class="calc-info-line">${infoLine}</div>
