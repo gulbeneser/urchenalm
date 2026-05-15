@@ -38,3 +38,6 @@
 - Check hash routes such as `#home`, `#zimmer`, `#zimmer-doppel`, `#apartments`, and `#kalkulator`.
 - For calculator changes, test at least one room and one apartment, including date ranges crossing seasons and closed periods.
 - Run `git diff --check` before committing to catch whitespace problems.
+
+## Recent maintenance notes
+- Apartment calculator totals include the configured `endreinigung` amount from `data/prices.json`; user-facing result copy must therefore say that Endreinigung is included in the displayed Gesamtpreis, not added separately on top.
