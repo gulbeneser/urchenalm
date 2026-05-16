@@ -28,8 +28,13 @@
 - Add meaningful `alt` text for new images.
 
 ## Logo and brand assets
-- The active site logo is `photos/newlogo.png`; use this file for header, footer, favicon/apple-touch icon, and any future logo placements instead of embedding base64 image data.
-- Logo images should include descriptive German `alt` text such as `Frühstückspension Urchenhof Logo` and explicit dimensions when placed in HTML to reduce layout shift.
+- The active site logo is served as optimized 600×450 assets:
+  - `photos/logo.webp` (~41 KB, preferred via `<picture><source type="image/webp">`)
+  - `photos/logo.png` (~87 KB, fallback for the `<img>` tag)
+  - `photos/favicon.png` (64×64) for `<link rel="icon">`
+  - `photos/apple-touch-icon.png` (180×180, square padded) for `<link rel="apple-touch-icon">`
+  The original high-resolution `photos/newlogo.png` is retained as the master file; re-export the optimized variants from it if the logo changes.
+- Use the `<picture>` pattern for new logo placements rather than embedding base64 image data. Always include descriptive German `alt` text such as `Frühstückspension Urchenhof Logo` and explicit `width`/`height` (600×450 for the resized logo) to reduce layout shift.
 - Keep logo styling in `css/style.css` under `.brand-logo` and `.footer-logo` so future replacements can be made without duplicating inline styles.
 
 ## Design system
@@ -37,6 +42,7 @@
 - Keep the visual language consistent: warm paper backgrounds, moss green accents, ember CTAs, Fraunces headings, Manrope body text.
 - Price tables need high contrast and horizontal scrolling on small screens.
 - Any prominent CTA should remain readable against its background and have hover/focus states.
+- Color contrast: `--ink`, `--ink-soft`, `--moss`, `--moss-light`, `--ember-deep` and the tuned `--muted` (`#706A5E`) / `--ember` (`#A85530`) all meet WCAG AA for body text on `--bg` / `--paper`. `--gold` and `--stone` are decorative — use only on dark backgrounds (`--moss`, `--ink`) or for large headings/em accents, never for small body text on light backgrounds.
 
 ## Testing checklist for future agents
 - Run a lightweight static check after edits, e.g. `python3 -m http.server` and load the site in a browser if possible.
