@@ -52,6 +52,7 @@
 
 ## Recent maintenance notes
 - Apartment calculator totals include the configured `endreinigung` amount from `data/prices.json`; user-facing result copy must therefore say that Endreinigung is included in the displayed Gesamtpreis, not added separately on top.
+- Für das Doppelzimmer gilt in `data/prices.json` eine eigene Sommer-Preisphase bis **15.07.2026** (Saison-ID `sommer-zwischen` für 04.07.–15.07.): Single € 70, Doppelbelegung € 100; danach startet die Sommerhochsaison am 16.07.2026. Sichtbare Preistabellen und JSON-Saisondaten immer gemeinsam aktualisieren.
 
 ## Task completion checklist
 - At the end of every task, review this `AGENTS.md` guide and update it when new project knowledge, maintenance notes, asset rules, SEO rules, or testing expectations have changed.
